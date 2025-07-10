@@ -104,13 +104,11 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.RegexValidator',
-        'OPTIONS': {
-            'regex': r'^(?=.*[!@#$%^&*(),.?":{}|<>])',
-            'message': "Password must contain at least one symbol."
-        }
+        'NAME': 'user.validators.SymbolValidator',  # 👈 this is your custom one
     },
 ]
+
+
 
 AUTH_USER_MODEL = 'user.CustomUser'
 
