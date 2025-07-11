@@ -11,6 +11,18 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+import firebase_admin
+from firebase_admin import credentials
+import os
+from decouple import config
+
+
+FIREBASE_CREDENTIALS = config("FIREBASE_CREDENTIALS")
+#print("FIREBASE_CREDENTIALS:", FIREBASE_CREDENTIALS)
+
+if not firebase_admin._apps:
+    cred = credentials.Certificate(FIREBASE_CREDENTIALS)
+    firebase_admin.initialize_app(cred)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,7 +32,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-30(j=6n!!_ln+-w4*c%&fl-jmnq3s#5ji4!#ei918zz!8uy!8a"
+SECRET_KEY = config("DJANGO_SECRET_KEY")
+FIREBASE_CREDENTIALS = config("FIREBASE_CREDENTIALS")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -103,9 +116,7 @@ AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
-    {
-        'NAME': 'user.validators.SymbolValidator',  # 👈 this is your custom one
-    },
+    
 ]
 
 

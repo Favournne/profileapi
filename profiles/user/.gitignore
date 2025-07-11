@@ -12,3 +12,38 @@ db.sqlite3
 .DS_Store
 .idea/
 .vscode/
+# Byte-compiled / cache files
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyc
+
+# Virtual environment
+.venv/
+venv/
+ENV/
+env/
+
+# Django specific
+*.log
+*.pot
+*.py[cod]
+*.sqlite3
+db.sqlite3
+profiles/db.sqlite3
+
+# Environment & credentials
+.env
+*.env
+firebase_credentials.json
+profiles/firebase_credentials.json
+
+# Editor/IDE settings
+.vscode/
+.idea/
+.DS_Store
+
+# OS-specific
+Thumbs.db
+ehthumbs.db
+Desktop.ini
