@@ -24,10 +24,22 @@ class FirebaseLoginAPIView(APIView):
             return Response({'error': 'ID token required.'}, status=status.HTTP_400_BAD_REQUEST)
         try:
             user_info = verify_firebase_id_token(id_token)
+            uid = user_info.get('uid')
+            email = user_info.get('email')
+
+            user, created = CustomUser.objects.get_or_create(
+                firebase_uid=uid,
+                defaults={
+                    'email': email,
+                    'first_name': first_name,
+                }
+            )
+
             return Response({
                 'message': 'Login successful.',
                 'uid': user_info.get('uid'),
                 'email': user_info.get('email'),
+                'created': created,
             }, status=status.HTTP_200_OK)
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_401_UNAUTHORIZED)

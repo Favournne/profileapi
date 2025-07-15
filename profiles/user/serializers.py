@@ -41,6 +41,14 @@ class UserProfileSerializer(serializers.ModelSerializer):
         ]
         read_only_fields = fields
 
+    def create(self, validated_data):
+        password = validated_data.pop('password', None)
+        user = CustomUser(**validated_data)
+        if password:
+            user.set_password(password)  # This hashes the password!
+        user.save()
+        return user
+
 
 class UserProfileUpdateSerializer(serializers.ModelSerializer):
     """Optional serializer for updating user info (not password)."""
