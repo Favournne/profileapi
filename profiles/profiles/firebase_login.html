@@ -30,7 +30,14 @@
       const password = document.getElementById("password").value;
       try {
         const userCredential = await firebase.auth().signInWithEmailAndPassword(email, password);
-        const token = await userCredential.user.getIdToken();
+        const user = userCredential.user;
+        if (!user.emailVerified) {
+          await user.sendEmailVerification();
+          alert("Verification email sent. Please check your inbox before logging in.");
+          document.getElementById("tokenDisplay").textContent = "Email not verified. Verification email sent.";
+          return;
+        }
+        const token = await user.getIdToken();
         document.getElementById("tokenDisplay").textContent = token;
         console.log("Token:", token);
       } catch (error) {

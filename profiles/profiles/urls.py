@@ -17,9 +17,12 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path, include
+from django.http import JsonResponse
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/user/', include('user.urls')),
+    path("api/test-connection/", lambda request: JsonResponse({"message": "Connected ✅"})),
 ]
     # Include the user app's URLs for user profile management

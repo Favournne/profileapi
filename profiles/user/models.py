@@ -1,8 +1,11 @@
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.db import models
 from django.contrib.auth.base_user import BaseUserManager
+from django.core.exceptions import ValidationError
 
-
+def non_empty_string(value):
+    if not value.strip():
+        raise ValidationError("This field cannot be empty.")
 
 class CustomUserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
@@ -28,18 +31,17 @@ class CustomUserManager(BaseUserManager):
 class CustomUser(AbstractBaseUser, PermissionsMixin):
     firebase_uid = models.CharField(max_length=255, unique=True, blank=True, null=True)
     email = models.EmailField(unique=True)
-    first_name = models.CharField(max_length=30)
-    last_name = models.CharField(max_length=30)
-    phone_number = models.CharField(max_length=15, blank=True, null=True)
+    first_name = models.CharField(max_length=30, validators=[non_empty_string])
+    last_name = models.CharField(max_length=30, validators=[non_empty_string])
+    phone_number = models.CharField(max_length=15, validators=[non_empty_string])
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
 
     objects = CustomUserManager()
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['first_name', 'last_name']
+    REQUIRED_FIELDS = ['first_name', 'last_name', 'phone_number']
 
-    
     def __str__(self):
         return self.email
     
